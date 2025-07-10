@@ -1,5 +1,7 @@
 import { IonApp, setupIonicReact } from "@ionic/react";
 import Home from "./pages/Home";
+import BannerAd from "./components/BannerAd/BannerAd";
+import { useAdMob } from "./hooks/useAdMob";
 
 /* Core CSS required for Ionic components to work properly */
 import "@ionic/react/css/core.css";
@@ -22,10 +24,16 @@ import "./theme/variables.css";
 
 setupIonicReact();
 
-const App: React.FC = () => (
-  <IonApp>
-    <Home />
-  </IonApp>
-);
+const App: React.FC = () => {
+  // Initialize AdMob
+  useAdMob();
+
+  return (
+    <IonApp>
+      <Home />
+      <BannerAd />
+    </IonApp>
+  );
+};
 
 export default App;

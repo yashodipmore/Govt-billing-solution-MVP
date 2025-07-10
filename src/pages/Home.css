@@ -1,4 +1,15 @@
 #container {
   height: min-content;
   overflow: hidden;
+  margin-bottom: 60px; /* Add space for banner ad */
+}
+
+/* Ensure content doesn't overlap with banner ad */
+ion-content {
+  --padding-bottom: 60px;
+}
+
+/* Adjust fab button position to account for banner */
+ion-fab[vertical="bottom"] {
+  bottom: 70px !important; /* Position above the banner ad */
 }

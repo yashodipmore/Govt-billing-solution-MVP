@@ -1,0 +1,59 @@
+.banner-ad-placeholder {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  border-top: 1px solid #e0e0e0;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.banner-ad-content {
+  text-align: center;
+  color: white;
+}
+
+.banner-ad-content span {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+
+.banner-ad-content small {
+  font-size: 10px;
+  opacity: 0.8;
+}
+
+.banner-ad-spacer {
+  height: 60px;
+  background: transparent;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 999;
+  pointer-events: none;
+}
+
+/* Ensure content doesn't get hidden behind the banner */
+.banner-ad-margin {
+  margin-bottom: 60px !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .banner-ad-placeholder,
+  .banner-ad-spacer {
+    height: 50px;
+  }
+  
+  .banner-ad-margin {
+    margin-bottom: 50px !important;
+  }
+}
