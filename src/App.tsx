@@ -1,5 +1,6 @@
 import { IonApp, setupIonicReact } from "@ionic/react";
 import Home from "./pages/Home";
+import { testFirebaseConnection } from "./firebase.config";
 
 /* Core CSS required for Ionic components to work properly */
 import "@ionic/react/css/core.css";
@@ -21,6 +22,11 @@ import "@ionic/react/css/display.css";
 import "./theme/variables.css";
 
 setupIonicReact();
+
+// Test Firebase connection on app startup
+testFirebaseConnection().then(result => {
+  console.log('Firebase Test Result:', result);
+});
 
 const App: React.FC = () => (
   <IonApp>

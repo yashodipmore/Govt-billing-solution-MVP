@@ -65,4 +65,34 @@ export class Local {
       return false;
     }
   };
+
+  // Method to get list of all saved file names
+  getFileList = async (): Promise<string[]> => {
+    try {
+      const { keys } = await Preferences.keys();
+      // Filter out any non-file keys if needed
+      return keys.filter(key => {
+        // You can add additional filtering logic here if needed
+        // For now, return all keys as they should be file names
+        return true;
+      });
+    } catch (error) {
+      console.error('Error getting file list:', error);
+      return [];
+    }
+  };
+
+  // Method to get content of a specific file
+  getFileContent = async (fileName: string): Promise<string | null> => {
+    try {
+      const fileData = await this._getFile(fileName);
+      if (fileData && fileData.content) {
+        return fileData.content;
+      }
+      return null;
+    } catch (error) {
+      console.error('Error getting file content for:', fileName, error);
+      return null;
+    }
+  };
 }
