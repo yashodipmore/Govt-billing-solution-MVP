@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import * as AppGeneral from "../socialcalc/index.js";
 import { File, Local } from "../Storage/LocalStorage";
+import { CloudService } from "../Storage/cloud-service";
 import { isPlatform, IonToast } from "@ionic/react";
 import { EmailComposer } from "capacitor-email-composer";
 import { Printer } from "@ionic-native/printer";
 import { IonActionSheet, IonAlert } from "@ionic/react";
-import { saveOutline, save, mail, print } from "ionicons/icons";
+import { saveOutline, save, mail, print, documentText, document, share } from "ionicons/icons";
 import { APP_NAME } from "../../app-data.js";
 
 const Menu: React.FC<{
@@ -132,6 +133,84 @@ const Menu: React.FC<{
     }
   };
 
+  const exportAsCsv = () => {
+    try {
+      const csvContent = AppGeneral.getCSVContent();
+      const fileName = props.file === "default" ? "spreadsheet" : props.file;
+      CloudService.exportCSV(csvContent, fileName);
+      setToastMessage("CSV exported successfully!");
+      setShowToast1(true);
+    } catch (error) {
+      console.error("Error exporting CSV:", error);
+      setToastMessage("Failed to export CSV");
+      setShowToast1(true);
+    }
+  };
+
+  const exportAsPDF = async (option = {}) => {
+    try {
+      console.log('Starting PDF export...');
+      
+      const htmlContent = AppGeneral.getCurrentHTMLContent();
+      const fileName = props.file === "default" ? "invoice" : props.file;
+      
+      if (!htmlContent || htmlContent.trim() === '') {
+        setToastMessage("No content found to export as PDF");
+        setShowToast1(true);
+        return;
+      }
+      
+      const pdfBlob = await CloudService.createSmartPDF(htmlContent, fileName, option);
+      CloudService.downloadPDF(pdfBlob, fileName);
+      
+      setToastMessage("PDF exported successfully!");
+      setShowToast1(true);
+      
+    } catch (error) {
+      console.error("Error exporting PDF:", error);
+      setToastMessage("Failed to export PDF. Please try again.");
+      setShowToast1(true);
+    }
+  };
+
+  const sharePDF = async () => {
+    try {
+      const htmlContent = AppGeneral.getCurrentHTMLContent();
+      console.log('HTML Content for PDF sharing:', htmlContent); // Debug log
+      
+      let pdfBlob;
+      const fileName = props.file === "default" ? "document" : props.file;
+      
+      // Try to find the spreadsheet element directly
+      const doc = window.document;
+      const spreadsheetElement = doc.getElementById('tableeditor') || 
+                                 doc.getElementById('te_griddiv') || 
+                                 doc.querySelector('.socialcalc-table') ||
+                                 doc.querySelector('[id*="grid"]') ||
+                                 doc.querySelector('[class*="spreadsheet"]');
+      
+      if (spreadsheetElement && spreadsheetElement.id) {
+        console.log('Using direct element capture for PDF sharing');
+        pdfBlob = await CloudService.createPDFFromElement(spreadsheetElement.id, fileName);
+      } else if (htmlContent && htmlContent.trim() !== '') {
+        console.log('Using smart PDF creation for PDF sharing');
+        pdfBlob = await CloudService.createSmartPDF(htmlContent, fileName);
+      } else {
+        setToastMessage("No spreadsheet content found to share as PDF");
+        setShowToast1(true);
+        return;
+      }
+      
+      await CloudService.sharePDF(pdfBlob, fileName, `Share ${fileName}`);
+      setToastMessage("PDF shared successfully!");
+      setShowToast1(true);
+    } catch (error) {
+      console.error("Error sharing PDF:", error);
+      setToastMessage("Failed to share PDF: " + error.message);
+      setShowToast1(true);
+    }
+  };
+
   return (
     <React.Fragment>
       <IonActionSheet
@@ -154,6 +233,30 @@ const Menu: React.FC<{
             handler: () => {
               setShowAlert3(true);
               console.log("Save As clicked");
+            },
+          },
+          {
+            text: "Export as CSV",
+            icon: documentText,
+            handler: () => {
+              exportAsCsv();
+              console.log("Export CSV clicked");
+            },
+          },
+          {
+            text: "Export as PDF",
+            icon: document,
+            handler: () => {
+              exportAsPDF();
+              console.log("Export PDF clicked");
+            },
+          },
+          {
+            text: "Share PDF",
+            icon: share,
+            handler: () => {
+              sharePDF();
+              console.log("Share PDF clicked");
             },
           },
           {
