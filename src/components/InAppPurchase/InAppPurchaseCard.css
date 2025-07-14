@@ -1,0 +1,162 @@
+.purchase-card {
+  margin: 1rem;
+  border-radius: 16px;
+  overflow: hidden;
+  background: var(--ion-card-background, #fff);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  position: relative;
+}
+
+.purchase-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.card-overlay {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 1rem;
+  z-index: 1;
+}
+
+.card-overlay.active {
+  background: linear-gradient(135deg, transparent 0%, rgba(var(--ion-color-success-rgb), 0.1) 100%);
+}
+
+.status-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(var(--ion-color-success-rgb), 0.1);
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  backdrop-filter: blur(4px);
+}
+
+.card-header-content {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.package-icon {
+  background: rgba(var(--ion-color-primary-rgb), 0.1);
+  padding: 1rem;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.package-icon ion-icon {
+  font-size: 2rem;
+}
+
+.package-info {
+  flex: 1;
+}
+
+ion-card-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+ion-card-subtitle {
+  font-size: 0.9rem;
+  color: var(--ion-color-medium);
+}
+
+.package-details {
+  padding: 1rem 0;
+}
+
+.units-badge {
+  margin-bottom: 1rem;
+}
+
+.units-badge ion-badge {
+  font-size: 0.9rem;
+  padding: 0.5rem 1rem;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: fit-content;
+}
+
+.price-action {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.price-tag {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--ion-color-dark);
+}
+
+.currency {
+  font-size: 1rem;
+  margin-right: 0.2rem;
+  opacity: 0.7;
+}
+
+.purchase-button {
+  --border-radius: 12px;
+  --padding-start: 1.5rem;
+  --padding-end: 1.5rem;
+  font-weight: 600;
+  height: 2.8rem;
+}
+
+.purchase-button ion-icon {
+  font-size: 1.2rem;
+}
+
+/* Skeleton Loading Animation */
+ion-skeleton-text {
+  --border-radius: 8px;
+  --background: rgba(var(--ion-color-medium-rgb), 0.15);
+}
+
+/* Dark Mode Adjustments */
+@media (prefers-color-scheme: dark) {
+  .purchase-card {
+    background: var(--ion-card-background, #1e1e1e);
+  }
+
+  .package-icon {
+    background: rgba(var(--ion-color-primary-rgb), 0.2);
+  }
+
+  .price-tag {
+    color: var(--ion-color-light);
+  }
+
+  ion-card-subtitle {
+    opacity: 0.8;
+  }
+}
+
+/* Animation for new purchases */
+@keyframes highlight {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.02);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.purchase-card.new-purchase {
+  animation: highlight 0.5s ease;
+}

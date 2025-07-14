@@ -5,7 +5,8 @@ import { isPlatform, IonToast } from "@ionic/react";
 import { EmailComposer } from "capacitor-email-composer";
 import { Printer } from "@ionic-native/printer";
 import { IonActionSheet, IonAlert } from "@ionic/react";
-import { saveOutline, save, mail, print } from "ionicons/icons";
+import { useHistory } from "react-router-dom";
+import { saveOutline, save, mail, print, cart } from "ionicons/icons";
 import { APP_NAME } from "../../app-data.js";
 
 const Menu: React.FC<{
@@ -16,6 +17,7 @@ const Menu: React.FC<{
   store: Local;
   bT: number;
 }> = (props) => {
+  const history = useHistory();
   const [showAlert1, setShowAlert1] = useState(false);
   const [showAlert2, setShowAlert2] = useState(false);
   const [showAlert3, setShowAlert3] = useState(false);
@@ -146,6 +148,7 @@ const Menu: React.FC<{
             handler: () => {
               doSave();
               console.log("Save clicked");
+              return true;
             },
           },
           {
@@ -154,6 +157,7 @@ const Menu: React.FC<{
             handler: () => {
               setShowAlert3(true);
               console.log("Save As clicked");
+              return true;
             },
           },
           {
@@ -162,6 +166,7 @@ const Menu: React.FC<{
             handler: () => {
               doPrint();
               console.log("Print clicked");
+              return true;
             },
           },
           {
@@ -170,8 +175,19 @@ const Menu: React.FC<{
             handler: () => {
               sendEmail();
               console.log("Email clicked");
+              return true;
             },
           },
+          {
+            text: "In-App Purchase",
+            icon: cart,
+            handler: () => {
+              props.setM(false);
+              history.push('/in-app-purchase');
+              console.log("In-App Purchase clicked");
+              return true;
+            },
+          }
         ]}
       />
       <IonAlert

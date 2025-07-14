@@ -1,5 +1,8 @@
-import { IonApp, setupIonicReact } from "@ionic/react";
+import { IonApp, IonRouterOutlet, setupIonicReact } from "@ionic/react";
+import { IonReactRouter } from "@ionic/react-router";
+import { Redirect, Route } from "react-router-dom";
 import Home from "./pages/Home";
+import InAppPurchasePage from "./pages/InAppPurchasePage";
 
 /* Core CSS required for Ionic components to work properly */
 import "@ionic/react/css/core.css";
@@ -24,7 +27,15 @@ setupIonicReact();
 
 const App: React.FC = () => (
   <IonApp>
-    <Home />
+    <IonReactRouter>
+      <IonRouterOutlet>
+        <Route exact path="/home" component={Home} />
+        <Route exact path="/in-app-purchase" component={InAppPurchasePage} />
+        <Route exact path="/">
+          <Redirect to="/home" />
+        </Route>
+      </IonRouterOutlet>
+    </IonReactRouter>
   </IonApp>
 );
 

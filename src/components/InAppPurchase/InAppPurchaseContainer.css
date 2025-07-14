@@ -1,0 +1,93 @@
+.purchase-container {
+  padding: 1rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.purchase-header {
+  text-align: center;
+  margin: 2rem 0;
+}
+
+.purchase-header h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: var(--ion-color-dark);
+}
+
+.filters {
+  margin: 2rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+ion-segment {
+  --background: var(--ion-color-light);
+  border-radius: 12px;
+  padding: 0.3rem;
+}
+
+ion-segment-button {
+  --padding-start: 1rem;
+  --padding-end: 1rem;
+  --border-radius: 8px;
+  min-height: 2.8rem;
+  font-weight: 500;
+  text-transform: none;
+}
+
+.package-search {
+  --border-radius: 12px;
+  --box-shadow: none;
+  --background: var(--ion-color-light);
+  padding: 0;
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin: 4rem 0;
+}
+
+ion-spinner {
+  width: 48px;
+  height: 48px;
+  color: var(--ion-color-primary);
+}
+
+/* Responsive Grid */
+@media (min-width: 768px) {
+  .filters {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  ion-segment {
+    width: auto;
+  }
+
+  .package-search {
+    width: 300px;
+  }
+}
+
+/* Dark Mode */
+@media (prefers-color-scheme: dark) {
+  .purchase-header h1 {
+    color: var(--ion-color-light);
+  }
+
+  ion-segment {
+    --background: rgba(var(--ion-color-light-rgb), 0.1);
+  }
+
+  .package-search {
+    --background: rgba(var(--ion-color-light-rgb), 0.1);
+  }
+}
