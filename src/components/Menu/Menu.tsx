@@ -5,8 +5,11 @@ import { isPlatform, IonToast } from "@ionic/react";
 import { EmailComposer } from "capacitor-email-composer";
 import { Printer } from "@ionic-native/printer";
 import { IonActionSheet, IonAlert } from "@ionic/react";
-import { saveOutline, save, mail, print } from "ionicons/icons";
+import { saveOutline, save, mail, print, logInOutline, logOutOutline } from "ionicons/icons";
 import { APP_NAME } from "../../app-data.js";
+import { useAuth } from "../../contexts/AuthContext";
+import { authService } from "../../services/authService";
+import { useHistory } from "react-router-dom";
 
 const Menu: React.FC<{
   showM: boolean;
@@ -22,6 +25,8 @@ const Menu: React.FC<{
   const [showAlert4, setShowAlert4] = useState(false);
   const [showToast1, setShowToast1] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
+  const { currentUser } = useAuth();
+  const history = useHistory();
   /* Utility functions */
   const _validateName = async (filename) => {
     filename = filename.trim();
@@ -46,6 +51,22 @@ const Menu: React.FC<{
 
   const getCurrentFileName = () => {
     return props.file;
+  };
+
+  // Authentication functions
+  const handleLogin = () => {
+    history.push('/auth');
+  };
+
+  const handleLogout = async () => {
+    try {
+      await authService.logout();
+      setToastMessage("Logged out successfully!");
+      setShowToast1(true);
+    } catch (error: any) {
+      setToastMessage("Logout failed: " + error.message);
+      setShowToast1(true);
+    }
   };
 
   const _formatString = (filename) => {
@@ -170,6 +191,18 @@ const Menu: React.FC<{
             handler: () => {
               sendEmail();
               console.log("Email clicked");
+            },
+          },
+          {
+            text: currentUser ? "Logout" : "Login/Register",
+            icon: currentUser ? logOutOutline : logInOutline,
+            handler: () => {
+              if (currentUser) {
+                handleLogout();
+              } else {
+                handleLogin();
+              }
+              console.log(currentUser ? "Logout clicked" : "Login/Register clicked");
             },
           },
         ]}
